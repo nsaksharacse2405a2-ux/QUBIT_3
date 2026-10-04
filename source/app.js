@@ -31,7 +31,7 @@ const list=k=>`<section class="lp">${D("tv","fl lg","right:-70px;top:150px;width
 <div class="tabs">${Object.keys(cats).map(c=>`<a class="btn ${c===k?"on":""}" href="#/${c}">${cats[c][1]}</a>`).join("")}</div>
 <div class="grid">${CONFIG[k].map((e,i)=>`<article class="card c${i%4} rv" style="--i:${i}"><span class="num">${String(i+1).padStart(2,"0")}</span>${D(ICO[k][i%4],"cdi","right:14px;top:14px;width:46px;--o:.35")}<h3>${esc(e.name)}</h3><a class="ex" href="#/event/${k}/${i}">Explore ↗</a><a class="cover" href="#/event/${k}/${i}" aria-label="Explore ${esc(e.name)}" tabindex="-1"></a></article>`).join("")}</div></section>`;
 const detail=(k,i)=>{
-  const e=CONFIG[k][i],t=e.team,p=e.prize||{},cs=e.coordinators||[];
+  const e=CONFIG[k][i],t=e.team,p=e.prize||{};
   const pz=[["🥇 First prize",p.first],["🥈 Second prize",p.second],["🥉 Third prize",p.third]].filter(x=>x[1]);
   const ts=t==="individual"?"INDIVIDUAL":t?`${t.min} - ${t.max} MEMBERS`:"";
   const info=[["EVENT TYPE",cats[k][1]],["TEAM SIZE",ts],["REGISTRATION FEE",e.fee],["PRIZE POOL",e.pool],["DATE",e.date],["TIME",e.time],["VENUE",e.venue]];

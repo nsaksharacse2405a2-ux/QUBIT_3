@@ -560,7 +560,7 @@ const list=k=>`<section class="lp">${D("tv","fl lg","right:-70px;top:150px;width
 <div class="tabs">${Object.keys(cats).map(c=>`<a class="btn ${c===k?"on":""}" href="#/${c}">${cats[c][1]}</a>`).join("")}</div>
 <div class="grid">${CONFIG[k].map((e,i)=>`<article class="card c${i%4} rv" style="--i:${i}"><span class="num">${String(i+1).padStart(2,"0")}</span>${D(ICO[k][i%4],"cdi","right:14px;top:14px;width:46px;--o:.35")}<h3>${esc(e.name)}</h3><a class="ex" href="#/event/${k}/${i}">Explore ↗</a><a class="cover" href="#/event/${k}/${i}" aria-label="Explore ${esc(e.name)}" tabindex="-1"></a></article>`).join("")}</div></section>`;
 const detail=(k,i)=>{
-  const e=CONFIG[k][i],t=e.team,p=e.prize||{},cs=e.coordinators||[];
+  const e=CONFIG[k][i],t=e.team,p=e.prize||{};
   const pz=[["🥇 First prize",p.first],["🥈 Second prize",p.second],["🥉 Third prize",p.third]].filter(x=>x[1]);
   const ts=t==="individual"?"INDIVIDUAL":t?`${t.min} - ${t.max} MEMBERS`:"";
   const info=[["EVENT TYPE",cats[k][1]],["TEAM SIZE",ts],["REGISTRATION FEE",e.fee],["PRIZE POOL",e.pool],["DATE",e.date],["TIME",e.time],["VENUE",e.venue]];
@@ -570,7 +570,6 @@ const detail=(k,i)=>{
 ${k==="tech"||k==="non"?"":`<div class="sec"><h3>Event Information</h3><div class="ib">${info.map(([a,b])=>`<div><small>${a}</small>${v(b)}</div>`).join("")}</div></div>
 <div class="sec"><h3>Prize Money</h3><div class="prize">${pz.length?pz.map(([a,b])=>`<p>${a} ${esc(b)}</p>`).join(""):TBA}</div></div>
 <div class="sec"><h3>Team Size</h3>${t==="individual"?"<p>TEAM SIZE: INDIVIDUAL PARTICIPATION</p>":t?`<p>MINIMUM MEMBERS: ${esc(t.min)}</p><p>MAXIMUM MEMBERS: ${esc(t.max)}</p>`:TBA}</div>`}
-<div class="sec"><h3>Event Coordinator</h3>${k==="tech"||k==="non"?`<div class="box" style="padding:12px 16px;margin-bottom:14px;max-width:460px"><p>NAME: ${TBA}</p><p>PHONE: ${TBA}</p></div>`:cs.length?cs.map(c=>`<div class="box" style="padding:12px 16px;margin-bottom:14px;max-width:460px">${c.name?`<p>NAME: ${esc(c.name)}</p>`:""}${c.phone?`<p>PHONE: <a href="tel:${esc(c.phone.replace(/[^+\d]/g,""))}" style="text-decoration:underline">${esc(c.phone)}</a></p>`:""}${c.email?`<p>EMAIL: <a href="mailto:${esc(c.email)}" style="text-decoration:underline">${esc(c.email)}</a></p>`:""}</div>`).join(""):TBA}</div>
 <div class="sec"><a class="reg" href="${esc(e.form||"#")}"${e.form&&CONFIG.newTab?' target="_blank" rel="noopener"':""}>Register Now</a></div></section>`};
 const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;let rvIO;
 app.addEventListener("click",e=>{
