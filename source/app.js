@@ -35,14 +35,9 @@ const detail=(k,i)=>{
   const pz=[["🥇 First prize",p.first],["🥈 Second prize",p.second],["🥉 Third prize",p.third]].filter(x=>x[1]);
   const ts=t==="individual"?"INDIVIDUAL":t?`${t.min} - ${t.max} MEMBERS`:"";
   const info=[["EVENT TYPE",cats[k][1]],["TEAM SIZE",ts],["REGISTRATION FEE",e.fee],["PRIZE POOL",e.pool],["DATE",e.date],["TIME",e.time],["VENUE",e.venue]];
-  return `<section class="dtl">${D("reel","spin lg","right:-44px;top:100px;width:170px;--o:.28;--dc:var(--dgold)")}${D("star","pul","right:12%;top:90px;width:28px;--dc:var(--dgold)")}<a class="back" href="#/${k}">← Back to events</a>
+  return `<section class="dtl">${D("reel","spin lg","right:-44px;top:100px;width:170px;--o:.28;--dc:var(--dgold)")}${D("star","pul","right:12%;top:90px;width:28px;--dc:var(--dgold)")}<a class="back" href="#/${k}">← Back</a>
 <div class="event-heading"><small class="dim">${cats[k][1]} EVENT</small><h1>${esc(e.name)}</h1>${k==="tech"||k==="non"?"":`<p class="tag">“${esc(e.tag||"Tagline pending")}”</p>`}</div>
 <figure class="print bigpost">${e.poster?`<button class="poster-trigger" type="button" aria-label="Enlarge ${esc(e.name)} poster"><img src="${esc(e.poster)}" alt="${esc(e.name)} poster"></button><dialog class="poster-dialog" aria-label="${esc(e.name)} poster"><form method="dialog"><button class="poster-close" aria-label="Close enlarged poster">Close ×</button></form><img src="${esc(e.poster)}" alt="${esc(e.name)} poster enlarged"></dialog>`:art(e)}</figure>
-<div class="sec"><h3>Description</h3>${e.desc?e.desc.split("\n\n").map(x=>`<p>${esc(x)}</p>`).join(""):'<p class="dim">Description pending: what the event is, what participants do, the objective, rules and skills involved.</p>'}</div>
-${k==="tech"||k==="non"?"":`<div class="sec"><h3>Event Information</h3><div class="ib">${info.map(([a,b])=>`<div><small>${a}</small>${v(b)}</div>`).join("")}</div></div>
-<div class="sec"><h3>Prize Money</h3><div class="prize">${pz.length?pz.map(([a,b])=>`<p>${a} ${esc(b)}</p>`).join(""):TBA}</div></div>
-<div class="sec"><h3>Team Size</h3>${t==="individual"?"<p>TEAM SIZE: INDIVIDUAL PARTICIPATION</p>":t?`<p>MINIMUM MEMBERS: ${esc(t.min)}</p><p>MAXIMUM MEMBERS: ${esc(t.max)}</p>`:TBA}</div>`}
-<div class="sec"><h3>Event Coordinator</h3>${k==="tech"||k==="non"?`<div class="box" style="padding:12px 16px;margin-bottom:14px;max-width:460px"><p>NAME: ${TBA}</p><p>PHONE: ${TBA}</p></div>`:cs.length?cs.map(c=>`<div class="box" style="padding:12px 16px;margin-bottom:14px;max-width:460px">${c.name?`<p>NAME: ${esc(c.name)}</p>`:""}${c.phone?`<p>PHONE: <a href="tel:${esc(c.phone.replace(/[^+\d]/g,""))}" style="text-decoration:underline">${esc(c.phone)}</a></p>`:""}${c.email?`<p>EMAIL: <a href="mailto:${esc(c.email)}" style="text-decoration:underline">${esc(c.email)}</a></p>`:""}</div>`).join(""):TBA}</div>
 <div class="sec"><a class="reg" href="${esc(e.form||"#")}"${e.form&&CONFIG.newTab?' target="_blank" rel="noopener"':""}>Register Now</a></div></section>`};
 const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;let rvIO;
 app.addEventListener("click",e=>{
@@ -104,6 +99,8 @@ function initArchive(){
   };
   if(!reduced&&CONFIG.gallery.length>1)archiveFrame=requestAnimationFrame(advance);
 }
+// loader panel: wait for the display fonts (max 1.5s) so QUBIT ’26 appears at its final size
+(()=>{const b=$("#boot");if(!b)return;const show=()=>b.classList.add("ready");if(!document.fonts||!document.fonts.load){show();return}Promise.race([Promise.all([document.fonts.load('1em "Bowlby One"'),document.fonts.load('700 1em "DM Sans"')]),new Promise(r=>setTimeout(r,1500))]).then(show,show)})();
 // boot
 (()=>{const b=$("#boot"),i=$("#bari"),status=$("#bootx"),bar=$(".bar"),duration=3500,start=performance.now();const update=()=>{const elapsed=Math.min(performance.now()-start,duration),progress=Math.floor(elapsed/duration*100);i.style.width=`${progress}%`;bar.setAttribute("aria-valuenow",String(progress));status.textContent=elapsed>=duration-2000?"SHOW TIME":"LOADING";if(elapsed>=duration){setTimeout(()=>b.classList.add("off"),250);return}setTimeout(update,50)};update()})();
 // menu button: opens as an overlay right where the user is (no scroll jump, no page lock)

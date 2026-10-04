@@ -122,7 +122,7 @@ nav a:hover,nav a.on{color:var(--ac)}nav a:hover:after,nav a.on:after{transform:
 .ib small{display:block;margin-bottom:4px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--mut)}
 .prize{padding:20px 24px;border:2px solid var(--ac)}.prize p{margin:6px 0;font:400 26px var(--d);color:var(--ink)}
 .box{background:rgba(253,227,193,.06);border:1.5px solid var(--line)}
-.reg{display:inline-block;padding:16px 36px;background:#ffc933;color:#3d0a18;border:3px solid #2a0813;box-shadow:6px 6px 0 #e0392b;font:400 26px var(--d);text-transform:uppercase;transition:.2s}.reg:hover{translate:-2px -2px;box-shadow:9px 9px 0 #e0392b}.reg:active{translate:4px 4px;box-shadow:2px 2px 0 #e0392b}
+.reg{display:inline-block;padding:10px 24px;background:#ffc933;color:#3d0a18;border:3px solid #2a0813;box-shadow:4px 4px 0 #e0392b;font:400 18px var(--d);text-transform:uppercase;transition:.2s}.reg:hover{translate:-2px -2px;box-shadow:6px 6px 0 #e0392b}.reg:active{translate:2px 2px;box-shadow:2px 2px 0 #e0392b}
 /* archive */
 .archive-controls{margin:-6px 0 14px}.archive-note{display:block;max-width:60ch;color:var(--mut);font:400 17px/1.55 var(--b);letter-spacing:0;text-transform:none}
 .archive-viewport{overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin;scrollbar-color:var(--ac2) #0000;padding:18px 8px 22px}
@@ -299,7 +299,7 @@ html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
  .bigpost{max-width:100%}.sec{margin-top:30px;padding-top:18px}.sec h3{font-size:clamp(22px,7vw,32px)}
  .ib{grid-template-columns:1fr}.ib div{font-size:17px}
  .prize{padding:14px 16px}.prize p{font-size:clamp(18px,5.6vw,24px)}
- .reg{display:block;width:100%;text-align:center;padding:15px 18px;font-size:clamp(20px,6vw,26px);box-shadow:5px 5px 0 #e0392b}
+ .reg{display:block;width:100%;text-align:center;padding:10px 16px;font-size:clamp(16px,4.6vw,18px);box-shadow:4px 4px 0 #e0392b}
  .poster-dialog{max-width:94vw;width:94vw;padding:8px}
  /* decorations never push layout */
  .tvh{right:-8%!important;width:44vw!important}
@@ -421,6 +421,7 @@ html body :is(p:not(.eyebrow):not(.cdmsg):not(.tag),li,small:not(.cdl),figcaptio
  .cd .cu small{font-size:clamp(8.5px,2.5vw,11px);letter-spacing:.06em;margin-top:5px}
  .cd .cc{font-size:clamp(16px,4.8vw,20px);padding-top:.16em;flex:none;text-shadow:none}
 }
+@media(max-width:819px){.cd .cdbox{width:min(100%,66vw);margin-inline:auto}}
 
 /* 4) tape recorder decoration (Home hero) */
 .rec-h{z-index:-1}
@@ -455,3 +456,17 @@ html body :is(p:not(.eyebrow):not(.cdmsg):not(.tag),li,small:not(.cdl),figcaptio
 
 /* ---------- stats numbers: smaller on phones too ---------- */
 @media(max-width:700px){.stats b{font-size:clamp(30px,10.5vw,46px);line-height:1}.stats div{padding:14px 12px}}
+
+/* loader: keep the QUBIT ’26 panel hidden until its fonts are ready, so the title never visibly changes size */
+#boot .boot-panel{opacity:0}
+#boot.ready .boot-panel{opacity:1;transition:opacity .35s ease}
+
+/* back button: compact */
+.back{gap:6px;margin-bottom:16px;padding:6px 12px;min-height:34px;font-size:12px;letter-spacing:.1em;box-shadow:2px 2px 0 rgba(224,57,43,.65)}
+.back:hover{box-shadow:3px 3px 0 rgba(224,57,43,.65)}
+
+/* stats: centre numbers + labels between the divider lines, smaller numbers */
+.stats div{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.stats b{font-size:clamp(28px,3.4vw,50px);line-height:1}
+.stats small{display:block;text-align:center}
+@media(max-width:700px){.stats b{font-size:clamp(26px,8.5vw,38px)}}

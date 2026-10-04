@@ -3,6 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>QUBIT ’26 · MGIT CSE</title>
 <meta name="theme-color" content="#2a0813">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=DM+Sans:wght@400;500;600;700&family=Lobster&display=swap" rel="stylesheet">
 <style>/* QUBIT '26 - theme tokens first, everything else follows them */
 :root{--bg:#2a0813;--ink:#fde3c1;--mut:#e0b79c;--ac:#ffc933;--ac2:#e8a21d;--red:#e0392b;--red2:#b3141c;--cream:#fde3c1;--line:rgba(253,227,193,.3);--d:"Bowlby One",Impact,sans-serif;--s:"Lobster","Brush Script MT",cursive;--b:"DM Sans",system-ui,sans-serif;--ease:cubic-bezier(.2,.8,.2,1);--spring:cubic-bezier(.34,1.56,.64,1);color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -427,6 +428,7 @@ html body :is(p:not(.eyebrow):not(.cdmsg):not(.tag),li,small:not(.cdl),figcaptio
  .cd .cu small{font-size:clamp(8.5px,2.5vw,11px);letter-spacing:.06em;margin-top:5px}
  .cd .cc{font-size:clamp(16px,4.8vw,20px);padding-top:.16em;flex:none;text-shadow:none}
 }
+@media(max-width:819px){.cd .cdbox{width:min(100%,66vw);margin-inline:auto}}
 
 /* 4) tape recorder decoration (Home hero) */
 .rec-h{z-index:-1}
@@ -461,6 +463,14 @@ html body :is(p:not(.eyebrow):not(.cdmsg):not(.tag),li,small:not(.cdl),figcaptio
 
 /* ---------- stats numbers: smaller on phones too ---------- */
 @media(max-width:700px){.stats b{font-size:clamp(30px,10.5vw,46px);line-height:1}.stats div{padding:14px 12px}}
+
+/* loader: keep the QUBIT ’26 panel hidden until its fonts are ready, so the title never visibly changes size */
+#boot .boot-panel{opacity:0}
+#boot.ready .boot-panel{opacity:1;transition:opacity .35s ease}
+
+/* back button: compact */
+.back{gap:6px;margin-bottom:16px;padding:6px 12px;min-height:34px;font-size:12px;letter-spacing:.1em;box-shadow:2px 2px 0 rgba(224,57,43,.65)}
+.back:hover{box-shadow:3px 3px 0 rgba(224,57,43,.65)}
 </style></head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><pattern id="ht" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.3" fill="#8d0f16" fill-opacity=".55"/></pattern>
@@ -554,10 +564,9 @@ const detail=(k,i)=>{
   const pz=[["🥇 First prize",p.first],["🥈 Second prize",p.second],["🥉 Third prize",p.third]].filter(x=>x[1]);
   const ts=t==="individual"?"INDIVIDUAL":t?`${t.min} - ${t.max} MEMBERS`:"";
   const info=[["EVENT TYPE",cats[k][1]],["TEAM SIZE",ts],["REGISTRATION FEE",e.fee],["PRIZE POOL",e.pool],["DATE",e.date],["TIME",e.time],["VENUE",e.venue]];
-  return `<section class="dtl">${D("reel","spin lg","right:-44px;top:100px;width:170px;--o:.28;--dc:var(--dgold)")}${D("star","pul","right:12%;top:90px;width:28px;--dc:var(--dgold)")}<a class="back" href="#/${k}">← Back to events</a>
+  return `<section class="dtl">${D("reel","spin lg","right:-44px;top:100px;width:170px;--o:.28;--dc:var(--dgold)")}${D("star","pul","right:12%;top:90px;width:28px;--dc:var(--dgold)")}<a class="back" href="#/${k}">← Back</a>
 <div class="event-heading"><small class="dim">${cats[k][1]} EVENT</small><h1>${esc(e.name)}</h1>${k==="tech"||k==="non"?"":`<p class="tag">“${esc(e.tag||"Tagline pending")}”</p>`}</div>
 <figure class="print bigpost">${e.poster?`<button class="poster-trigger" type="button" aria-label="Enlarge ${esc(e.name)} poster"><img src="${esc(e.poster)}" alt="${esc(e.name)} poster"></button><dialog class="poster-dialog" aria-label="${esc(e.name)} poster"><form method="dialog"><button class="poster-close" aria-label="Close enlarged poster">Close ×</button></form><img src="${esc(e.poster)}" alt="${esc(e.name)} poster enlarged"></dialog>`:art(e)}</figure>
-<div class="sec"><h3>Description</h3>${e.desc?e.desc.split("\n\n").map(x=>`<p>${esc(x)}</p>`).join(""):'<p class="dim">Description pending: what the event is, what participants do, the objective, rules and skills involved.</p>'}</div>
 ${k==="tech"||k==="non"?"":`<div class="sec"><h3>Event Information</h3><div class="ib">${info.map(([a,b])=>`<div><small>${a}</small>${v(b)}</div>`).join("")}</div></div>
 <div class="sec"><h3>Prize Money</h3><div class="prize">${pz.length?pz.map(([a,b])=>`<p>${a} ${esc(b)}</p>`).join(""):TBA}</div></div>
 <div class="sec"><h3>Team Size</h3>${t==="individual"?"<p>TEAM SIZE: INDIVIDUAL PARTICIPATION</p>":t?`<p>MINIMUM MEMBERS: ${esc(t.min)}</p><p>MAXIMUM MEMBERS: ${esc(t.max)}</p>`:TBA}</div>`}
@@ -623,6 +632,8 @@ function initArchive(){
   };
   if(!reduced&&CONFIG.gallery.length>1)archiveFrame=requestAnimationFrame(advance);
 }
+// loader panel: wait for the display fonts (max 1.5s) so QUBIT ’26 appears at its final size
+(()=>{const b=$("#boot");if(!b)return;const show=()=>b.classList.add("ready");if(!document.fonts||!document.fonts.load){show();return}Promise.race([Promise.all([document.fonts.load('1em "Bowlby One"'),document.fonts.load('700 1em "DM Sans"')]),new Promise(r=>setTimeout(r,1500))]).then(show,show)})();
 // boot
 (()=>{const b=$("#boot"),i=$("#bari"),status=$("#bootx"),bar=$(".bar"),duration=3500,start=performance.now();const update=()=>{const elapsed=Math.min(performance.now()-start,duration),progress=Math.floor(elapsed/duration*100);i.style.width=`${progress}%`;bar.setAttribute("aria-valuenow",String(progress));status.textContent=elapsed>=duration-2000?"SHOW TIME":"LOADING";if(elapsed>=duration){setTimeout(()=>b.classList.add("off"),250);return}setTimeout(update,50)};update()})();
 // menu button: opens as an overlay right where the user is (no scroll jump, no page lock)
